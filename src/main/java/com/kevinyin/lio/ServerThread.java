@@ -1,6 +1,6 @@
-package com.kevinyin.lsocket;
+package com.kevinyin.lio;
 
-import com.kevinyin.lio.ServiceAgentToolkit;
+import com.kevinyin.lsocket.TcpIpMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * Created by Kevin_Yin on 2017/6/30.
@@ -16,24 +15,27 @@ import java.util.concurrent.Callable;
 public class ServerThread extends Thread {
 
     private Integer type;
-    private String message;
+    TcpIpMessage message;
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
+    TcpIpServer tcpIpServer;
 
-
-    public ServerThread(Integer type, String message, Socket socket, ObjectInputStream ois) {
+    public ServerThread(TcpIpServer server, TcpIpMessage message , Socket socket, ObjectInputStream ois) {
         this.type = type;
         this.message = message;
         this.socket = socket;
         this.ois = ois;
         this.oos = oos;
+        this.tcpIpServer = server;
     }
 
     public void run(){
         System.out.println("Call Start......");
+        tcpIpServer.addMessage(message);
+        tcpIpServer.reduceMsg();
+        tcpIpServer.addID(message.getUuid());
         try {
-            Thread.sleep(60000);
             oos = new ObjectOutputStream(socket.getOutputStream());
             File filePath = new File("files");
             if (!filePath.exists()){
@@ -41,7 +43,7 @@ public class ServerThread extends Thread {
             }
             File file = new File(filePath, UUID.randomUUID().toString()+".tmp");
             file.createNewFile();
-            ServiceAgentToolkit.writeData2File(file.getAbsolutePath(),message.getBytes());
+            ServiceAgentToolkit.writeData2File(file.getAbsolutePath(),message.getMessage().getBytes());
 
             TcpIpMessage ackmsg = new TcpIpMessage("125454", 10, "服务器");
             System.out.println("服务器写会数据之前。。。。");
@@ -51,6 +53,7 @@ public class ServerThread extends Thread {
         }catch (Exception e){
             e.printStackTrace();
         }finally {
+            tcpIpServer.persistMsgIDs();
             try {
                 oos.close();
             } catch (IOException e) {
