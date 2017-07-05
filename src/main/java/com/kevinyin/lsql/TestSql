@@ -1,0 +1,27 @@
+#  between in
+select * from Store_Information where date between '2017-05-04' and '2017-07-07';
+
+# 排序  desc 降序   asc 升序
+SELECT * FROM Store_Information ORDER BY sales DESC;
+
+#函数
+    # 求和 SUM
+SELECT store_name,sum(sales) FROM Store_Information GROUP BY store_name;
+# 平均
+SELECT store_name,avg(sales) FROM Store_Information GROUP BY store_name;
+# 最大值
+SELECT max(sales) FROM WHERE Store_Information;
+
+SELECT * FROM Store_Information WHERE sales >= ALL(SELECT sales FROM Store_Information)
+
+SELECT TOP 1 sales FROM Store_Information ORDER BY sales;
+
+#统计数量 Count
+SELECT COUNT(DISTINCT store_name) FROM Store_Information;
+#聚集函数满足某一条件
+SELECT store_name,SUM(sales) as sum  FROM Store_Information GROUP BY store_name HAVING SUM(sales) > 1300
+
+#多表查询连接  left join 查询出所有的左边表的行，不管数据是否在右表中存在   inner join 取两表中的交集   full join 去并集  mysql不支持
+SELECT A1.region_name REGION ,A1.store_name, SUM(A2.sales) SALES FROM Geography A1 LEFT JOIN Store_Information A2 ON A1.store_name = A2.store_name GROUP BY A1.region_name,A1.store_name;
+# 查询语句内嵌查询语句
+SELECT * FROM Store_Information WHERE store_name IN (SELECT store_name FROM Geography)
