@@ -1,6 +1,6 @@
 package com.kevinyin.lsocket;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,8 +10,8 @@ import java.net.Socket;
 /**
  * Created by Kevin_Yin on 2017/6/30.
  */
+@Slf4j
 public class TcpIpClient {
-    private static Logger logger = Logger.getLogger(TcpIpClient.class);
     public static void main(String[] args) {
         Socket socket = null;
         ObjectInputStream ois = null;
@@ -34,27 +34,27 @@ public class TcpIpClient {
                     break;
                 }
             } catch (Exception e) {
-                logger.error("Exception in POSKDSRequest!!", e);
+                log.error("Exception in POSKDSRequest!!", e);
             } finally {
                 if (ois != null) {
                     try {
                         ois.close();
                     } catch (Exception e) {
-                        logger.error("Exception!!", e);
+                        log.error("Exception!!", e);
                     }
                 }
                 if (oos != null) {
                     try {
                         oos.close();
                     } catch (Exception e) {
-                        logger.error("Exception!!", e);
+                        log.error("Exception!!", e);
                     }
                 }
                 if (socket != null) {
                     try {
                         socket.close();
                     } catch (Exception e) {
-                        logger.error("Exception!!", e);
+                        log.error("Exception!!", e);
                     }
                 }
             }

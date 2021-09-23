@@ -1,6 +1,6 @@
 package com.kevinyin.lsocket;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,14 +13,14 @@ import java.util.concurrent.Executors;
 /**
  * Created by Kevin_Yin on 2017/6/30.
  */
+@Slf4j
 public class TcpIpServer {
 
-    private static Logger logger = Logger.getLogger(TcpIpClient.class);
     private static ExecutorService poolService = Executors.newSingleThreadExecutor();
 
     private static final int TIMEOUT = 50000;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ServerSocket server = null;
         try {
             server = new ServerSocket();
@@ -31,17 +31,17 @@ public class TcpIpServer {
                 ObjectInputStream ois = null;
                 try {
                     socket = server.accept();
-                    logger.info("Server got request @:" + System.currentTimeMillis());
+                    log.info("Server got request @:" + System.currentTimeMillis());
                     socket.setSoTimeout(TIMEOUT);
                     ois = new ObjectInputStream(socket.getInputStream());
                     TcpIpMessage message = (TcpIpMessage) ois.readObject();
-                    if(message != null){
-                        poolService.submit(new ServerThread(message.getType(),message.getMessage(),socket,ois));
+                    if (message != null) {
+                        poolService.submit(new ServerThread(message.getType(), message.getMessage(), socket, ois));
                     }
-                    logger.debug("END........");
+                    log.debug("END........");
                 } catch (Exception e) {
-                    logger.error("Exception on Server",e);
-                }finally {
+                    log.error("Exception on Server", e);
+                } finally {
                 }
             }
         } catch (IOException e) {

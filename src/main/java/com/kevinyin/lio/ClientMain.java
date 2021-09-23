@@ -1,10 +1,13 @@
 package com.kevinyin.lio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Random;
 
 /**
  * Created by Kevin_Yin on 2017/7/4.
  */
+@Slf4j
 public class ClientMain {
     static Random random = new Random();
     public static void main(String[] args) {
@@ -17,7 +20,7 @@ public class ClientMain {
                         try {
                             tcpIpClient.run();
                         }catch (Exception e){
-                            DebugLog.logger.error(e);
+                            log.error("运行失败",e);
                         }
                         try {
                             Thread.sleep(random.nextInt(5000));

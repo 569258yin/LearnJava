@@ -1,10 +1,12 @@
 package com.kevinyin.lio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 import java.net.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+@Slf4j
 public class ServiceAgentToolkit {
 	// Serialize an object to byte[]. Used for TCPIP message serialization
 	public static byte[] serialize(Serializable obj) throws IOException {
@@ -63,7 +65,7 @@ public class ServiceAgentToolkit {
 					}
 				}
 			}catch (Exception e){
-				DebugLog.logger.error("getSubnetMask....",e);
+				log.error("getSubnetMask....",e);
 			}finally {
 				if(in != null){
 					try {
@@ -140,22 +142,20 @@ public class ServiceAgentToolkit {
 	        DatagramSocket socket = new DatagramSocket (null);
 	        DatagramPacket packet=new DatagramPacket (message, message.length, host, port);
 	        socket.send (packet);	
-	        //DebugLog.logger.info("Message <" + new String(message) + "> send to " + host.getHostAddress() + " on port " + port);
-	        DebugLog.logger.info("Message <" + new String(packet.getData()) + "> send to " + host.getHostAddress() + " on port " + port);
+	        //log.info("Message <" + new String(message) + "> send to " + host.getHostAddress() + " on port " + port);
+	        log.info("Message <" + new String(packet.getData()) + "> send to " + host.getHostAddress() + " on port " + port);
 	        socket.close();
 			return true;
 		}
 		return false;
 	}
 	
-	//¡Á???????????byte
 	public static int bytes2Int(byte[] bytes) {
 	    return   bytes[3] & 0xFF |
 	            (bytes[2] & 0xFF) << 8 |
 	            (bytes[1] & 0xFF) << 16 |
 	            (bytes[0] & 0xFF) << 24;
 	}
-	//¡Á???????????byte
 	public static byte[] int2Bytes(int i) {
 		return new byte[] {
 				(byte) ((i >> 24) & 0xFF),
@@ -192,7 +192,6 @@ public class ServiceAgentToolkit {
 			/**
 			 * TSPOS1234_20140306_V1.0.0.5_full.zip, TSPOS1234_20140601_V1.0.0.2.zip,
 			 * TSCONFIG_STO1234_20140228_0003_Full.zip, TSCONFIG_STO1234_20140401_0002.zip ,
-			 * ??TSPOS_FULL???????????+?·Ú+1,TSPOS???????????+?·Ú+0,TSCONFIG_FULL???????????+????+?·Ú+1,TSCONFIG???????????+????+?·Ú+0
 			 */
 
 			if (temp.toUpperCase().endsWith("FULL")) {// 10404102STO12340002
@@ -232,7 +231,7 @@ public class ServiceAgentToolkit {
 			}
 
 		} catch (Exception ee) {
-			DebugLog.logger.error("Exception in ServiceAgentToolkit:getPassword(" +  filename  + ") - ", ee);
+			log.error("Exception in ServiceAgentToolkit:getPassword(" +  filename  + ") - ", ee);
 			return null;
 		}
 		// System.out.println("filename ===" + filename + "       password==" + password);
@@ -254,7 +253,7 @@ public class ServiceAgentToolkit {
 			sdf2 = new SimpleDateFormat("ddMMyyyy");
 
 		} catch (ParseException e) {
-			DebugLog.logger.error("Exception in ServiceAgentToolkit:transferString(" + oldString + ") - ", e);
+			log.error("Exception in ServiceAgentToolkit:transferString(" + oldString + ") - ", e);
 		}
 		return sdf2.format(dt);
 	}
@@ -268,7 +267,7 @@ public class ServiceAgentToolkit {
 			fos.close();
 		} catch (IOException ioe) {
 			soutMonitorInfo();
-			DebugLog.logger.error("ServiceAgentToolkit:writeData2File - When write file " + fileName + " got exception", ioe);
+			log.error("ServiceAgentToolkit:writeData2File - When write file " + fileName + " got exception", ioe);
 		} finally {
 			if (fos != null) {
 				try {
@@ -294,13 +293,13 @@ public class ServiceAgentToolkit {
 				fis.close();
 			} catch (IOException e) {
 				soutMonitorInfo();
-				DebugLog.logger.error("ServiceAgentToolkit:recoverObjectFromFile - When read file " + file + " got exception", e);
+				log.error("ServiceAgentToolkit:recoverObjectFromFile - When read file " + file + " got exception", e);
 			} finally {
 				if (fis != null) {
 					try {
 						fis.close();
 					} catch (IOException e) {
-						DebugLog.logger.error("ServiceAgentToolkit:recoverObjectFromFile - When close file " + fileName + " got exception", e);
+						log.error("ServiceAgentToolkit:recoverObjectFromFile - When close file " + fileName + " got exception", e);
 					}
 				}
 			}
@@ -308,14 +307,14 @@ public class ServiceAgentToolkit {
 				try {
 					obj = deserialize(content);
 				} catch (Exception e) {
-					DebugLog.logger.error("ServiceAgentToolkit:recoverObjectFromFile - When deserialize file " + file + " got exception", e);
+					log.error("ServiceAgentToolkit:recoverObjectFromFile - When deserialize file " + file + " got exception", e);
 				}
 			}
 		}else{
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				DebugLog.logger.error("ServiceAgentToolkit:recoverObjectFromFile - When create file " + file + " got exception", e);
+				log.error("ServiceAgentToolkit:recoverObjectFromFile - When create file " + file + " got exception", e);
 			}
 		}
 		return obj;
@@ -329,7 +328,7 @@ public class ServiceAgentToolkit {
 				file.createNewFile();
 			} catch (IOException e) {
 				soutMonitorInfo();
-				DebugLog.logger.error("ServiceAgentToolkit:saveObjectToFile - When create file " + fileName + " got exception", e);
+				log.error("ServiceAgentToolkit:saveObjectToFile - When create file " + fileName + " got exception", e);
 			}
 		}
 		try {
@@ -338,13 +337,13 @@ public class ServiceAgentToolkit {
 			fos.close();
 		} catch (IOException e) {
 			soutMonitorInfo();
-			DebugLog.logger.error("ServiceAgentToolkit:saveObjectToFile - When creat/write file " + fileName + " got exception", e);
+			log.error("ServiceAgentToolkit:saveObjectToFile - When creat/write file " + fileName + " got exception", e);
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
-					DebugLog.logger.error("ServiceAgentToolkit:saveObjectToFile - When close file " + fileName + " got exception", e);
+					log.error("ServiceAgentToolkit:saveObjectToFile - When close file " + fileName + " got exception", e);
 				}
 			}
 		}
@@ -356,14 +355,14 @@ public class ServiceAgentToolkit {
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(infoName, true)));
 			out.write(text);
 		} catch (Exception e) {
-			DebugLog.logger.error("Exception in ServiceAgentToolkit:appendInfo(" +  infoName + "," +  text +") when write - ", e);
+			log.error("Exception in ServiceAgentToolkit:appendInfo(" +  infoName + "," +  text +") when write - ", e);
 		} finally {
 			try {
 				if(out != null) {
 					out.close();
 				}
 			} catch (IOException e) {
-				DebugLog.logger.error("Exception in ServiceAgentToolkit:appendInfo(" +  infoName + "," +  text +") when close - ", e);
+				log.error("Exception in ServiceAgentToolkit:appendInfo(" +  infoName + "," +  text +") when close - ", e);
 			}
 		}
 	}
@@ -380,13 +379,13 @@ public class ServiceAgentToolkit {
 				bytes = fis.read(content);
 				fis.close();
 			} catch (IOException e) {
-				DebugLog.logger.error("ServiceAgentToolkit:readFileContent2Bytes when recoverObjectFromFile - When read file " + file + " got exception", e);
+				log.error("ServiceAgentToolkit:readFileContent2Bytes when recoverObjectFromFile - When read file " + file + " got exception", e);
 			} finally {
 				if (fis != null) {
 					try {
 						fis.close();
 					} catch (IOException e) {
-						DebugLog.logger.error("ServiceAgentToolkit:readFileContent2Bytes when recoverObjectFromFile - When close file " + fileName + " got exception", e);
+						log.error("ServiceAgentToolkit:readFileContent2Bytes when recoverObjectFromFile - When close file " + fileName + " got exception", e);
 					}
 				}
 			}
@@ -405,11 +404,10 @@ public class ServiceAgentToolkit {
 		return (new File(fileName)).exists();
 	}
 	/**
-	 * ????????¦Ë????
 	 * @return
 	 */
 	public static String sendPlateNumberPosition(String ip, int port, int timeout,String msg) throws Exception {
-		DebugLog.logger.info("sendPlateNumberPosition...ip:" + ip + ",port:" + port + ",msg:" + msg);
+		log.info("sendPlateNumberPosition...ip:" + ip + ",port:" + port + ",msg:" + msg);
 		String ackmsg = null;
 		Socket socket = null;
 		ObjectOutputStream oos = null;
@@ -440,11 +438,10 @@ public class ServiceAgentToolkit {
 		return ackmsg;
 	}
 //	/**
-//	 * ????????¦Ë????
 //	 * @return
 //	 */
 //	public static boolean sendPlateNumberPosition(String ip, int port, int timeout,String msg){
-//		DebugLog.logger.info("sendPlateNumberPosition...ip:" + ip + ",port:" + port + ",msg:" + msg);
+//		log.info("sendPlateNumberPosition...ip:" + ip + ",port:" + port + ",msg:" + msg);
 //		boolean res = false;
 //		int retry = ConfigurationManager.getConfigurationManager().localTableServiceRetryConnection;//??????????????
 //		int connectionQty = 0;
@@ -472,8 +469,7 @@ public class ServiceAgentToolkit {
 //				}
 //
 //			}catch(SocketTimeoutException e){
-//				DebugLog.logger.error("Exception!!", e);
-//				//??????????????¡¤???,??????????
+//				log.error("Exception!!", e);
 //				if(connectionQty == 0){
 //					connectionQty++;
 //					continue;
@@ -482,7 +478,7 @@ public class ServiceAgentToolkit {
 //					break;
 //				}
 //			} catch (Exception e) {
-//				DebugLog.logger.error("Exception in sendPlateNumberPosition !!",e);
+//				log.error("Exception in sendPlateNumberPosition !!",e);
 //				res = false;
 //			} finally {
 //				try {
@@ -496,7 +492,7 @@ public class ServiceAgentToolkit {
 //						socket.close();
 //					}
 //				} catch (IOException e) {
-//					DebugLog.logger.error("IOException in sendPlateNumberPosition !!" , e);
+//					log.error("IOException in sendPlateNumberPosition !!" , e);
 //				}
 //			}
 //
@@ -505,34 +501,31 @@ public class ServiceAgentToolkit {
 //	}
 
 	public static boolean findProcess(String processName) {
-		DebugLog.logger.info("POSControllerToolKit -- findProcess  processName=" + processName);
+		log.info("POSControllerToolKit -- findProcess  processName=" + processName);
 		BufferedReader input = null;
 		try {
 	        String line = null;
-	        //????????§Ò?
 	        Process p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
 	        input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 	        int count = 0;
 	        while ((line = input.readLine()) != null) {
-	        	//??????????????????????????????
 	            if(line.contains(processName)){
 	            	count ++;
 	            }
-	            //??????????2??????????????????true?????????§Ô????????§µ???????????????????????????1
 	            if(count >= 2){
 	            	return true;
 	            }
 	        }
 	        return false;
 	    } catch (Exception e) {
-			DebugLog.logger.error("POSControllerToolKit -- findProcess  error...");
+			log.error("POSControllerToolKit -- findProcess  error...");
 			return false;
 	    }finally{
 	    	if(input != null){
 	    		try {
 					input.close();
 				} catch (IOException e) {
-					DebugLog.logger.error("POSControllerToolKit -- findProcess -- input.close error...");
+					log.error("POSControllerToolKit -- findProcess -- input.close error...");
 				}
 	    	}
 	    }
@@ -541,23 +534,23 @@ public class ServiceAgentToolkit {
 
 	public static void soutMonitorInfo() {
 		/* Total number of processors or cores available to the JVM */
-		DebugLog.logger.info("Available processors (cores): " +
+		log.info("Available processors (cores): " +
 				Runtime.getRuntime().availableProcessors());
 //		System.out.println("Available processors (cores): " +
 //				Runtime.getRuntime().availableProcessors());
 
 		/* Total amount of free memory available to the JVM */
-		DebugLog.logger.info("Free memory (bytes): " +
+		log.info("Free memory (bytes): " +
 				Runtime.getRuntime().freeMemory()/ 1024 / 1024  +"M");
 
 		/* This will return Long.MAX_VALUE if there is no preset limit */
 		long maxMemory = Runtime.getRuntime().maxMemory();
 		/* Maximum amount of memory the JVM will attempt to use */
-		DebugLog.logger.info("Maximum memory (bytes): " +
+		log.info("Maximum memory (bytes): " +
 				(maxMemory == Long.MAX_VALUE ? "no limit" : maxMemory / 1024 / 1024 +"M"));
 
 		/* Total memory currently available to the JVM */
-		DebugLog.logger.info("Total memory available to JVM (bytes): " +
+		log.info("Total memory available to JVM (bytes): " +
 				Runtime.getRuntime().totalMemory() / 1024 / 1024 +"M");
 
 		/* Get a list of all filesystem roots on this system */
@@ -565,10 +558,10 @@ public class ServiceAgentToolkit {
 
 		/* For each filesystem root, print some info */
 		for (File root : roots) {
-			DebugLog.logger.info("File system root: " + root.getAbsolutePath());
-			DebugLog.logger.info("Total space (bytes): " + root.getTotalSpace() / 1024 / 1024/1024 + "G");
-			DebugLog.logger.info("Free space (bytes): " +  root.getFreeSpace() / 1024 / 1024/1024 + "G");
-			DebugLog.logger.info("Usable space (bytes): " + root.getUsableSpace() / 1024 / 1024 /1024 + "G");
+			log.info("File system root: " + root.getAbsolutePath());
+			log.info("Total space (bytes): " + root.getTotalSpace() / 1024 / 1024/1024 + "G");
+			log.info("Free space (bytes): " +  root.getFreeSpace() / 1024 / 1024/1024 + "G");
+			log.info("Usable space (bytes): " + root.getUsableSpace() / 1024 / 1024 /1024 + "G");
 		}
 	}
 }

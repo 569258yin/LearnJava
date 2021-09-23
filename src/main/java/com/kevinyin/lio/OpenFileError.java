@@ -1,6 +1,6 @@
 package com.kevinyin.lio;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,9 +8,8 @@ import java.io.FileInputStream;
 /**
  * Created by Kevin_Yin on 2017/7/3.
  */
+@Slf4j
 public class OpenFileError {
-
-    private static Logger logger = Logger.getLogger(OpenFileError.class);
 
     public static void main(String[] args) {
         System.out.println("====================Start===================");
@@ -28,7 +27,7 @@ public class OpenFileError {
                 FileInputStream fileInputStream = new FileInputStream(file);
 
             }catch (Exception e){
-                logger.error("打开文件异常",e);
+                log.error("打开文件异常",e);
             }finally {
                 i++;
             }

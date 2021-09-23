@@ -1,8 +1,7 @@
 package com.kevinyin.lio;
 
-import com.kevinyin.lsocket.TcpIpClient;
 import com.kevinyin.lsocket.TcpIpMessage;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +16,9 @@ import java.util.concurrent.Executors;
 /**
  * Created by Kevin_Yin on 2017/6/30.
  */
+@Slf4j
 public class TcpIpServer {
 
-    private static Logger logger = Logger.getLogger(TcpIpClient.class);
     private static ExecutorService poolService = Executors.newSingleThreadExecutor();
 
 
@@ -34,7 +33,7 @@ public class TcpIpServer {
         this.port = port;
     }
 
-    public void run(){
+    public void run() {
         ServerSocket server = null;
         try {
             server = new ServerSocket();
@@ -45,16 +44,16 @@ public class TcpIpServer {
                 ObjectInputStream ois = null;
                 try {
                     socket = server.accept();
-                    logger.info("Server got request==========port = " +port);
+                    log.info("Server got request==========port = " + port);
                     socket.setSoTimeout(TIMEOUT);
                     ois = new ObjectInputStream(socket.getInputStream());
                     TcpIpMessage message = (TcpIpMessage) ois.readObject();
-                    if(message != null){
-                        poolService.submit(new ServerThread(this,message,socket,ois));
+                    if (message != null) {
+                        poolService.submit(new ServerThread(this, message, socket, ois));
                     }
                 } catch (Exception e) {
-                    logger.error("Exception on Server",e);
-                }finally {
+                    log.error("Exception on Server", e);
+                } finally {
                 }
             }
         } catch (IOException e) {
@@ -63,6 +62,7 @@ public class TcpIpServer {
     }
 
     private final int MSG_REQ_MAX = 200;
+
     public void reduceMsg() {
         int size = msgIds.size();
         if (size > MSG_REQ_MAX) {
@@ -76,6 +76,7 @@ public class TcpIpServer {
             msgs = tempMsgs;
         }
     }
+
     public boolean containsID(String msgID) {
         return msgIds.contains(msgID);
     }
@@ -91,16 +92,16 @@ public class TcpIpServer {
     public void persistMsgIDs() {
         String path = "msgs/";
         File folder = new File(path);
-        if(!folder.exists()){
+        if (!folder.exists()) {
             folder.mkdirs();
         }
-        String idsFileName = path +  "_"+this.port+".id";
-        String msgFileName = path + "_"+this.port+".msg";
+        String idsFileName = path + "_" + this.port + ".id";
+        String msgFileName = path + "_" + this.port + ".msg";
         try {
             ServiceAgentToolkit.writeData2File(idsFileName, ServiceAgentToolkit.serialize(this.msgIds));
             ServiceAgentToolkit.writeData2File(msgFileName, ServiceAgentToolkit.serialize(this.msgs));
         } catch (Exception e) {
-            DebugLog.logger.error("Persist msgIDs / Msgs to file got exception: ", e);
+            log.error("Persist msgIDs / Msgs to file got exception: ", e);
         }
     }
 
