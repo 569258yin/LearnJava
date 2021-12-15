@@ -1,7 +1,6 @@
 package com.kevinyin.leetcode.illustrationofalgorithm;
 
 import java.util.ArrayDeque;
-import java.util.Queue;
 
 public class Leet06PrintListNode {
 
@@ -11,7 +10,7 @@ public class Leet06PrintListNode {
         ListNode list3 = new ListNode(2);
         list1.next = list2;
         list2.next = list3;
-        int[] array = mainReversePrint(list1);
+        int[] array = reversePrint(list1);
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i] + ",");
         }
@@ -19,15 +18,18 @@ public class Leet06PrintListNode {
 
 
     public static int[] mainReversePrint(ListNode head) {
-        Queue<Integer> queue = new ArrayDeque<>();
-        while (head.next != null) {
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        while (true) {
             queue.add(head.val);
+            if (head.next == null) {
+                break;
+            }
             head = head.next;
         }
         int[] array = new int[queue.size()];
         int i = 0;
         while (true) {
-            Integer v = queue.poll();
+            Integer v = queue.pollLast();
             if (v == null) {
                 break;
             }
@@ -39,13 +41,13 @@ public class Leet06PrintListNode {
     public static int[] reversePrint(ListNode head) {
         int count = 0;
         ListNode c = head;
-        while (c.next != null) {
+        while (c != null) {
             count++;
             c = c.next;
         }
         int[] array = new int[count];
         count--;
-        while (head != null && count > 0) {
+        while (head != null && count >= 0) {
             array[count--] = head.val;
             head = head.next;
         }
