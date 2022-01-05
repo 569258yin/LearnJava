@@ -33,7 +33,6 @@ public class MyLinkedList {
     }
 
     public int get(int index) {
-        index = index - 1;
         Node node = getIndexNode(index);
         if (node == null) {
             return -1;
@@ -64,12 +63,12 @@ public class MyLinkedList {
     }
 
     public void addAtIndex(int index, int val) {
-        index = index - 1;
-        if (index >= size) {
+        if (index > size) {
             return;
         }
         if (index == 0) {
             addAtHead(val);
+            return;
         }
         if (index == size) {
             addAtTail(val);
@@ -92,7 +91,6 @@ public class MyLinkedList {
     }
 
     public void deleteAtIndex(int index) {
-        index = index - 1;
         if (index >= size) {
             return;
         }
@@ -144,18 +142,23 @@ public class MyLinkedList {
 
     public static void main(String[] args) {
         MyLinkedList linkedList = new MyLinkedList();
-        linkedList.addAtHead(7);
-        linkedList.addAtHead(2);
-        linkedList.addAtHead(1);
-        //链表变为1-> 2-> 3
-        linkedList.addAtIndex(3, 0);
-        //现在链表是1-> 3
-        linkedList.deleteAtIndex(2);
-        linkedList.addAtHead(6);
-        linkedList.addAtTail(4);
-        System.out.println(linkedList.get(5));
-        linkedList.addAtHead(4);
-        linkedList.addAtIndex(5, 0);
-        linkedList.addAtHead(6);
+//        linkedList.addAtHead(7);
+//        linkedList.addAtHead(2);
+//        linkedList.addAtHead(1);
+//        //链表变为1-> 2-> 3
+//        linkedList.addAtIndex(3, 0);
+//        //现在链表是1-> 3
+//        linkedList.deleteAtIndex(2);
+//        linkedList.addAtHead(6);
+//        linkedList.addAtTail(4);
+//        System.out.println(linkedList.get(4));
+//        linkedList.addAtHead(4);
+//        linkedList.addAtIndex(5, 0);
+//        linkedList.addAtHead(6);
+
+        linkedList.addAtIndex(0,10);
+        linkedList.addAtIndex(0,20);
+        linkedList.addAtIndex(1,30);
+        System.out.println(linkedList.get(0));
     }
 }
