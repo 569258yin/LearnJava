@@ -1,0 +1,75 @@
+### 解法一
+
+使用```StringBuilder```解决，逐渐遍历字符串中的字符，如果不是空格就把当前字符加入到```StringBuilder```中，如果是字符就把```"%20"```加入到```StringBuilder```中，代码如下
+
+* java
+
+```java
+public String replaceSpaces(String S, int length) {
+    StringBuilder stringBuilder = new StringBuilder();
+    //逐渐遍历字符串
+    for (int i = 0; i < length; i++) {
+        //如果不是空格就加入到StringBuilder中，如果是空格
+        //就把"%20"加入到StringBuilder中
+        char ch = S.charAt(i);
+        if (ch == ' ') {
+            stringBuilder.append("%20");
+        } else {
+            stringBuilder.append(ch);
+        }
+    }
+    return stringBuilder.toString();
+}
+```
+
+还可以使用java提供的方法，
+
+* java
+
+```java
+ public String replaceSpaces(String S, int length) {
+    return S.substring(0, length).replaceAll(" ", "%20");
+}
+```
+
+但题中说了如果使用java实现的话，要使用字符数组实现，所以下面代码在这里不合适，我们来把它改一下
+
+<br> </br>
+
+### 解法二
+
+也是逐渐遍历字符串中的所有字符，如果遇到空格，就把他转化为```"%20"```，只不过这里是一数组的形式来计算。
+
+* 
+
+```
+public String replaceSpaces(String S, int length) {
+    //先把字符串转化为字符数组
+    char[] chars = S.toCharArray();
+    int index = chars.length - 1;
+    for (int i = length - 1; i >= 0; i--) {
+        //如果遇到空格就把他转化为"%20"
+        if (chars[i] == ' ') {
+            chars[index--] = '0';
+            chars[index--] = '2';
+            chars[index--] = '%';
+        } else {
+            chars[index--] = chars[i];
+        }
+    }
+    return new String(chars, index + 1, chars.length - index - 1);
+}
+```
+
+看一下运行结果
+
+![image.png](https://pic.leetcode-cn.com/1617184098-tFGmAS-image.png)
+
+<br> </br>
+
+我把部分算法题整理成了PDF文档，截止目前总共有**900多页**，大家可以下载阅读
+**链接**：https://pan.baidu.com/s/1hjwK0ZeRxYGB8lIkbKuQgQ
+**提取码**：6666
+
+#### 如果觉得有用就给个赞吧，还可以关注我的[LeetCode主页](https://leetcode-cn.com/u/sdwwld/)查看更多的详细题解
+

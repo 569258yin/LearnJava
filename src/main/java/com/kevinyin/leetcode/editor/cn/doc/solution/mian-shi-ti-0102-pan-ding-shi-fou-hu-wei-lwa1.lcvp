@@ -1,0 +1,117 @@
+## 解法1
+
+* java
+
+```java
+class Solution {
+    public boolean CheckPermutation(String s1, String s2) {
+        // 将字符串转换成字符数组
+        char[] s1Chars = s1.toCharArray();
+        char[] s2Chars = s2.toCharArray();
+        // 对字符数组进行排序
+        Arrays.sort(s1Chars);
+        Arrays.sort(s2Chars);
+        // 再将字符数组转换成字符串，比较是否相等
+        return new String(s1Chars).equals(new String(s2Chars));
+    }
+}
+/*
+    解题思路：
+        0.API
+        1.将字符串转换成字符数组，然后排序，再转换成字符串，比较两个字符串是否相等即可
+    总结：
+        1.效率还是不错
+ */
+/*
+    执行用时：0 ms, 在所有 Java 提交中击败了100.00% 的用户
+    内存消耗：35.9 MB, 在所有 Java 提交中击败了94.90% 的用户
+ */
+```
+
+## 解法2
+
+* java
+
+```java
+public class Solution {
+    public boolean CheckPermutation(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        char[] s1Chars = s1.toCharArray();
+        Map<Character, Integer> s1Map = getMap(s1);
+        Map<Character, Integer> s2Map = getMap(s2);
+        for (char s1Char : s1Chars) {
+            if (!s2Map.containsKey(s1Char) || s2Map.get(s1Char) != s1Map.get(s1Char)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 统计指定字符串str中各字符的出现次数，并以Map的形式返回
+    private Map<Character, Integer> getMap(String str) {
+        Map<Character, Integer> map = new HashMap<>();
+        char[] chars = str.toCharArray();
+        for (char aChar : chars) {
+            map.put(aChar, map.getOrDefault(aChar, 0) + 1);
+        }
+        return map;
+    }
+}
+/*
+    解题思路：
+        0.HashMap计数
+        1.如果一个字符串经过重新排列后，能够变成另外一个字符串，那么它们的每个不同字符的出现次数是相同的
+        2.如果出现次数不同，那么表示两个字符串不能够经过重新排列得到
+            例如："abc"中'a'字符出现1次，'b'字符出现1次，'c'字符出现1次
+                 "bad"中'a'字符出现1次，'b'字符出现1次，'c'字符出现0次，'d'字符出现1次
+ */
+/*
+    执行用时：1 ms, 在所有 Java 提交中击败了19.56% 的用户
+    内存消耗：36.1 MB, 在所有 Java 提交中击败了65.04% 的用户
+ */
+```
+
+## 解法3
+
+* java
+
+```java
+public class Solution {
+    public boolean CheckPermutation(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        int[] c1 = count(s1);
+        int[] c2 = count(s2);
+        for (int i = 0; i < c1.length; i++) {
+            if (c1[i] != c2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int[] count(String str) {
+        int[] c = new int[26];
+        char[] chars = str.toCharArray();
+        for (char aChar : chars) {
+            c[aChar - 'a']++;
+        }
+        return c;
+    }
+}
+/*
+    解题思路：
+        0.桶计数
+        1.解题思路本质上同解法2一样，都是统计字符个数，但这里使用的是桶计数，即用数组来统计每个字符的出现次数
+    总结：
+        1.效率高得多
+ */
+/*
+    执行用时：0 ms, 在所有 Java 提交中击败了100.00% 的用户
+    内存消耗：36 MB, 在所有 Java 提交中击败了92.73% 的用户
+ */
+```
+
