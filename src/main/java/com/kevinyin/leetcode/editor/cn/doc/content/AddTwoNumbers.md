@@ -37,4 +37,4 @@
 	<li><code>0 <= Node.val <= 9</code></li>
 	<li>题目数据保证列表表示的数字不含前导零</li>
 </ul>
-<div><div>Related Topics</div><div><li>递归</li><li>链表</li><li>数学</li></div></div><br><div><li>👍 7447</li><li>👎 0</li></div>
+<div><div>Related Topics</div><div><li>递归</li><li>链表</li><li>数学</li></div></div><br><div><li>👍 7448</li><li>👎 0</li></div>
