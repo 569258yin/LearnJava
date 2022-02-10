@@ -1,0 +1,56 @@
+### 解题思路
+
+当两个字符串的长度差小于2时，才有可能通过一次或零次编辑实现
+差值小于2可分为**长度相等**和**差1**，长度相同只能通过替换，差1只能通过插入或删除
+![image.png](https://pic.leetcode-cn.com/1631869952-bkWPjw-image.png)
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public boolean oneEditAway(String first, String second) {
+        int n1 = first.length(), n2 = second.length();
+        int flag = Math.abs(n1-n2); // 字符长度差
+        int temp = 0;   // 记录字符不同的个数，超过一个则为false
+        if (flag > 1) { // 长度差值为1以上则为false
+            return false;
+        } else if (flag == 0) { // 长度相同只能通过替换操作
+            for (int i=0; i<n1; i++) {
+                if (first.charAt(i) != second.charAt(i)) {
+                    temp++;
+                }
+                if (temp > 1) {
+                    return false;
+                }
+            }
+            return true;
+        } else {    // 字符长度差为1，只能通过插入和删除
+            if (n1 == 0 || n2 == 0) {
+                return true;
+            }
+            int i = 0;
+            int j = 0;
+            while (temp <= 1) {
+                if (first.charAt(i) == second.charAt(j)) {
+                    i++;
+                    j++;
+                } else {
+                    temp++;
+                    if (n1 > n2) {
+                        i++;
+                    } else {
+                        j++;
+                    }
+                }
+                if ((i >= n1 || j >= n2) && temp <= 1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}
+```
+

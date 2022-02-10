@@ -1,0 +1,52 @@
+思路详解
+
+长度差大于1，不可能拼出来，return false
+长度差等于0，遍历循环，统计对应位置不一致次数，每次不一致相当于进行了一次编辑，最后比较编辑次数即可。
+长度差等于1，所进行的编辑其实也只有一种，无论是长的删除一个还是短的增加一个，表现在遍历过程中都对应:
+- 遇到不匹配时，较长的字符串跳过当前位置比较下一个位置是否匹配
+
+将上述逻辑转换成代码，即可完成解答。
+
+* java
+
+```java
+public boolean oneEditAway(String first, String second) {
+    // 始终让first 更长
+    if (second.length() > first.length())
+        return oneEditAway(second, first);
+    // 长度差大于1
+    if (first.length() - second.length() > 1)
+        return false;
+
+    int edit = 1;
+    int i = 0, j = 0;
+    if (first.length() == second.length()) { // 长度相等的情况
+        while (i < first.length()) {
+            if (first.charAt(i) != second.charAt(j)) {
+                edit--;
+            }
+            i++;
+            j++;
+        }
+    } else { // 长度差为1 的情况
+        while (i < first.length()) {
+            // System.out.println(i+" "+j);
+            if (j == second.length())
+                return edit == 1 ? true : false;
+            if (first.charAt(i) == second.charAt(j)) {
+                i++;
+                j++;
+            } else {
+                if (i != first.length() - 1 && first.charAt(i + 1) == second.charAt(j)) { // 插入/删除字符
+                    edit--;
+                    i++;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+    return edit < 0 ? false : true;
+}
+```
+
