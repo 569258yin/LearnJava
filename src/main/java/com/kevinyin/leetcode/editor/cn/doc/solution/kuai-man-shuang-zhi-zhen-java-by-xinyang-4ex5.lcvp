@@ -1,0 +1,44 @@
+### 解题思路
+
+快慢双指针带注释
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public String compressString(String S) {
+        if (S.length() < 2)
+            return S;
+        // 快慢双指针
+        int left = 0;
+        int right = 1;
+        StringBuilder sb = new StringBuilder();  // 存储压缩后的字符
+        while (right <= S.length() - 1){
+            // 相邻两个字符不同，则将前面字符存入sb，并right-left作为数字紧接着存入
+            if (S.charAt(left) != S.charAt(right)){
+                sb.append(S.charAt(left));
+                sb.append(right - left);
+                left = right;  // 新的left从right的位置出发
+                right++;  // right指针向后移动一位
+            }
+            // 相邻字符相同，right指针往后移动，从而使得right-left代表重复元素的个数
+            else
+                right++;
+        }
+
+        // right走到S.length()索引，对于最后一个字符（left指向的字符）要进行append
+        sb.append(S.charAt(left));
+        sb.append(right - left);
+
+        // 若“压缩”后的字符串没有变短，则返回原先的字符串
+        if (sb.length() < S.length()){
+            return sb.toString();
+        }
+        else
+            return S;
+    }
+}
+```
+
