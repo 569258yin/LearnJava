@@ -1,0 +1,47 @@
+### 解题思路
+
+采用深度优先修改，检查是否被改动过，被改动了就则不需要改动，未被改动原本就是0，则进入递归深度修改
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return;
+        boolean[][] edited = new boolean[matrix.length][matrix[0].length];
+        for(int i=0;i<matrix.length; i++){
+           for(int j=0;j<matrix[0].length; j++){
+               if(edited[i][j]) continue;
+               if(matrix[i][j]==0){
+                    dfs(matrix, edited, i, j);
+                }
+            }
+        }
+    }
+
+    void dfs(int[][] matrix,boolean[][] edited, int row, int col){
+        for(int i=0;i<matrix[0].length; i++){
+            if(edited[row][i]) continue;
+            edited[row][i] = true;
+            if(matrix[row][i]==0){
+                dfs(matrix, edited, row, i);
+            }else{
+                matrix[row][i] =0;
+            }
+        }
+        for(int i=0;i<matrix.length; i++){
+            if(edited[i][col]) continue;
+            edited[i][col] = true;
+            if(matrix[i][col]==0){
+                dfs(matrix, edited, i, col);
+            }else{
+                matrix[i][col] =0;
+            }
+        }
+    }
+}
+
+```
+
