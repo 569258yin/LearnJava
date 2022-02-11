@@ -51,12 +51,33 @@ package com.kevinyin.leetcode.editor.cn;
 public class RotateMatrixLcci {
     public static void main(String[] args) {
         Solution solution = new RotateMatrixLcci().new Solution();
+        int[][] matrix = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        solution.rotate(matrix);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public void rotate(int[][] matrix) {
+            int n = matrix[0].length - 1;
+            for (int i = 0; i < matrix.length / 2; i++) {
+                for (int j = i; j < matrix[i].length - i - 1; j++) {
+                    rotateCircle(i, j, i, j, n, matrix, matrix[i][j]);
+                }
+            }
+        }
 
+        public void rotateCircle(int startI, int startJ, int i, int j, int n, int[][] matrix, int tmp_v) {
+
+            int tmp_point = i;
+            i = j;
+            j = n - tmp_point;
+            int old = tmp_v;
+            tmp_v = matrix[i][j];
+            matrix[i][j] = old;
+            if (i == startI && j == startJ) {
+                return;
+            }
+            rotateCircle(startI, startJ, i, j, n, matrix, tmp_v);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
