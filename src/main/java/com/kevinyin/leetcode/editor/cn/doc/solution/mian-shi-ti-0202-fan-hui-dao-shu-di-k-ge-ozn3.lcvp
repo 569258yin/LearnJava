@@ -1,0 +1,136 @@
+## 解题思路
+
+最直接的解法是「统计链表长度」，分为两步：
+
+1. 遍历链表并统计链表长度，记链表长度为 $N$ ；
+2. 设置一个节点指针向前走 $N - k$ 步，便可找到链表倒数第 $k$ 个节点；
+
+![ccw-02-02.001.png](https://pic.leetcode-cn.com/1642259240-ezhHTf-ccw-02-02.001.png)
+
+借助双指针，可省去统计链表长度操作，算法流程为：
+
+1. 初始化双指针 `pre` , `cur` 都指向头节点 `head` ；
+2. 先令 `cur` 走 $k$ 步，此时 `pre` , `cur` 的距离为 $k$ ；
+3. 令 `pre` , `cur` 一起走，直到 `cur` 走过尾节点时跳出，此时 `pre` 指向「倒数第 $k$ 个节点」，返回之即可；
+
+> 示例链表 `[1, 2, 3, 4, 5]` 的算法执行流程如下图所示。
+
+<![ccw-02-02.002.png](https://pic.leetcode-cn.com/1642259240-FXRLcu-ccw-02-02.002.png),![ccw-02-02.003.png](https://pic.leetcode-cn.com/1642259240-fepjUv-ccw-02-02.003.png),![ccw-02-02.004.png](https://pic.leetcode-cn.com/1642259240-RZDQjC-ccw-02-02.004.png),![ccw-02-02.005.png](https://pic.leetcode-cn.com/1642259240-BRiHyh-ccw-02-02.005.png),![ccw-02-02.006.png](https://pic.leetcode-cn.com/1642259240-ndbBtD-ccw-02-02.006.png),![ccw-02-02.007.png](https://pic.leetcode-cn.com/1642259240-FcHOPt-ccw-02-02.007.png),![ccw-02-02.008.png](https://pic.leetcode-cn.com/1642259240-WoRUod-ccw-02-02.008.png),![ccw-02-02.009.png](https://pic.leetcode-cn.com/1642259240-VfGQYt-ccw-02-02.009.png)>
+
+## 代码
+
+> 后三个 Tab 为「代码注释解析」。
+
+* []
+
+```Python
+class Solution:
+    def kthToLast(self, head: ListNode, k: int) -> int:
+        pre, cur = head, head
+        for _ in range(k):
+            cur = cur.next
+        while cur:
+            pre, cur = pre.next, cur.next
+        return pre.val
+```
+
+* []
+
+```Java
+class Solution {
+    public int kthToLast(ListNode head, int k) {
+        ListNode pre = head, cur = head;
+        for (int i = 0; i < k; i++)
+            cur = cur.next;
+        while (cur != null) {
+            pre = pre.next;
+            cur = cur.next;
+        }
+        return pre.val;
+    }
+}
+```
+
+* []
+
+```C++
+class Solution {
+public:
+    int kthToLast(ListNode* head, int k) {
+        ListNode *pre = head, *cur = head;
+        for (int i = 0; i < k; i++)
+            cur = cur->next;
+        while (cur != nullptr) {
+            pre = pre->next;
+            cur = cur->next;
+        }
+        return pre->val;
+    }
+};
+```
+
+* []
+
+```Python
+class Solution:
+    def kthToLast(self, head: ListNode, k: int) -> int:
+        # 双指针 pre, cur 都指向头节点 head
+        pre, cur = head, head
+        # cur 先走 k 步
+        for _ in range(k):
+            cur = cur.next
+        # 当 cur 走过尾节点时跳出
+        while cur:
+            # pre, cur 都向前走 1 步
+            pre, cur = pre.next, cur.next
+        return pre.val
+```
+
+* []
+
+```Java
+class Solution {
+    public int kthToLast(ListNode head, int k) {
+        // 双指针 pre, cur 都指向头节点 head
+        ListNode pre = head, cur = head;
+        // cur 先走 k 步
+        for (int i = 0; i < k; i++)
+            cur = cur.next;
+        // 当 cur 走过尾节点时跳出
+        while (cur != null) {
+            // pre, cur 都向前走 1 步
+            pre = pre.next;
+            cur = cur.next;
+        }
+        return pre.val;
+    }
+}
+```
+
+* []
+
+```C++
+class Solution {
+public:
+    int kthToLast(ListNode* head, int k) {
+        // 双指针 pre, cur 都指向头节点 head
+        ListNode *pre = head, *cur = head;
+        // cur 先走 k 步
+        for (int i = 0; i < k; i++)
+            cur = cur->next;
+        // 当 cur 走过尾节点时跳出
+        while (cur != nullptr) {
+            // pre, cur 都向前走 1 步
+            pre = pre->next;
+            cur = cur->next;
+        }
+        return pre->val;
+    }
+};
+```
+
+## 复杂度分析
+
+**时间复杂度 $O(N)$ ：** 其中 $N$ 为链表长度；遍历链表使用线性 $O(N)$ 时间。
+
+**空间复杂度 $O(1)$ ：** 双指针 `pre` , `cur` 使用常数大小的额外空间。

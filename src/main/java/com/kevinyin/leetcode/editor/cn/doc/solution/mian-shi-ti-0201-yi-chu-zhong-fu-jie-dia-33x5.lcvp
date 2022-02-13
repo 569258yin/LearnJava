@@ -1,0 +1,47 @@
+### 解题思路
+
+4ms 打败95.38%
+利用Set集合去重
+利用快慢指针进行消除重复
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeDuplicateNodes(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        Set<Integer> set = new HashSet<>();
+
+        ListNode curNode = head;
+        ListNode node = head;
+        
+        set.add(curNode.val);
+
+        while(curNode != null){
+            if(set.add(curNode.val)){
+                node.next = curNode;
+                node = node.next;
+            }
+            curNode = curNode.next;
+        }
+
+        node.next = null;
+
+        return head;
+    }
+}
+```
+

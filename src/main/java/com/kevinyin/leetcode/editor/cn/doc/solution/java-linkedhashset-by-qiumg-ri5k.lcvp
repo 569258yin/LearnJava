@@ -1,0 +1,38 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeDuplicateNodes(ListNode head) {
+          Set<Integer> set = new LinkedHashSet<>();
+        while(head != null){
+            set.add(head.val);
+            head=head.next;
+        }
+        Iterator<Integer> iterator=set.iterator();
+        ListNode l=new ListNode(0);
+        ListNode ll=l;
+        while(iterator.hasNext()){
+            ListNode tmp = new ListNode(iterator.next());
+            l.next=tmp;
+            l=tmp;
+        }
+        return ll.next;
+            
+    }
+}
+```
+
