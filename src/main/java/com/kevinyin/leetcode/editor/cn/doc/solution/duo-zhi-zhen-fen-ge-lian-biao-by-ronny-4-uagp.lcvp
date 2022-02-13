@@ -1,0 +1,96 @@
+### 解题思路
+
+1. 准备小于指针sH,sT,大于等于指针bH,bT
+2. 遍历链表，每个结点拆开判断
+   如果小，第一次sH和sT连上，后面sT移动，sH一路next过来
+   如果非小，第一次bH和bT连上，后面bT移动，bH一路next过来
+   这样最后形成两条不相连的链表
+3. 把sT连上bH，返回新链
+   注意如果没有s，或者没有b的情况，边界讨论清楚
+
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} x
+ * @return {ListNode}
+ */
+var partition = function(head, x) {
+    if (!head) {
+        return head;
+    }
+
+    /**
+        1. 准备小于指针sH,sT,大于等于指针bH,bT
+        2. 遍历链表，每个结点拆开判断
+            如果小，第一次sH和sT连上，后面sT移动，sH一路next过来
+            如果非小，第一次bH和bT连上，后面bT移动，bH一路next过来
+           这样最后形成两条不相连的链表
+        3. 把sT连上bH，返回新链
+            注意如果没有s，或者没有b的情况，边界讨论清楚
+     */
+
+    let sH = null;
+    let sT = null;
+    let bH = null;
+    let bT = null;
+    
+    let next = null;
+
+    while (head) {
+        // 每次都抓一下
+        next = head.next;
+        // 拆开链表
+        head.next = null;
+
+        if (head.val < x) {
+            if (sH === null) {
+                sH = head;
+                sT = head;
+            } else {
+                sT.next = head;
+                sT = head;
+            }
+        } 
+        
+        else {
+            if (bH === null) {
+                bH = head;
+                bT = head;
+            } else {
+                bT.next = head;
+                bT = head;
+            }
+        }
+
+        head = next;
+    }
+
+
+    let h = sH;
+
+    // 如果有小于，也有大于等于
+    if (sT && bH) {
+        sT.next = bH;
+    }
+
+    // 如果没有小于
+    if (!sT) {
+        h = bH;
+    }
+
+    return h;
+};
+
+```
+

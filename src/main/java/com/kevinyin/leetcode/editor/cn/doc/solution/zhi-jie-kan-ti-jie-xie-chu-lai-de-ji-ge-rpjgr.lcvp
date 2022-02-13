@@ -1,0 +1,43 @@
+### 解题思路
+
+定义亚节点的目的是为了方便连接和返回
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode smallhead = new ListNode(0);
+        ListNode bighead = new ListNode(0);
+        ListNode small = smallhead;
+        ListNode big = bighead;
+        while (head != null) {
+            if (head.val < x) {
+                small.next = head;
+                small = small.next;
+            } else {
+                big.next = head;
+                big = big.next;
+            }
+            head = head.next;
+        }
+        big.next = null;
+        small.next = bighead.next;
+        return smallhead.next;
+    }
+}
+
+
+
+```
+
