@@ -1,0 +1,57 @@
+### 解题思路
+
+使用了LinkedList作为栈的数据结构，将两个链表中的所有元素push到两个栈中，然后开始pop两个栈中的两个元素进行地址比较，相同就继续pop元素比较，不同则终止，这种解法非常好理解。
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode temp1 = headA;
+        ListNode temp2 = headB;
+        //intersection:交点 用来存储两个链表的交点
+        ListNode intersection = null;
+
+        Deque<ListNode> stack = new LinkedList<>();
+        Deque<ListNode> stack2 = new LinkedList<>();
+        while (temp1 != null) {
+            stack.push(temp1);
+            temp1 = temp1.next;
+        }
+        while (temp2 != null) {
+            stack2.push(temp2);
+            temp2 = temp2.next;
+        }
+
+        ListNode pop1 = stack.pop();
+        ListNode pop2 = stack2.pop();
+        while (pop1 != null && pop1 == pop2) {
+            intersection = pop1;
+            if (stack.size() == 0 || stack2.size() == 0) {
+                break;
+            }
+            pop1 = stack.pop();
+            pop2 = stack2.pop();
+        }
+        return intersection;
+    
+    }
+}
+```
+
