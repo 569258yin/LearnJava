@@ -1,0 +1,44 @@
+### 思路
+
+#### 链表相交
+
+1、用carry来存储进位点
+2、生成新的一条链表来存储计算结果
+
+细节：链表遍历完，carry为空时，也要处理计算
+
+### 代码
+
+* js
+
+```js
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+ var addTwoNumbers = function(l1, l2) {
+    let head1 = l1
+    let head2 = l2
+    let retList = new ListNode(-1)
+    let cur = retList
+    let carry = 0
+    let num1 =0 ,num2 = 0, tempVal = 0
+
+    while(head1 !== null || head2 !== null || carry > 0) {
+         num1 = head1 ? head1.val : 0
+         num2 = head2 ? head2.val : 0
+         tempVal = (num1 + num2 +carry) % 10
+         carry = (num1 + num2 +carry) >= 10 ? 1 : 0
+
+        cur.next = new ListNode(tempVal)
+        cur = cur.next
+         if(head1) head1 = head1.next
+         if(head2) head2 = head2.next
+    }
+
+    return retList.next
+};
+```
+
+**复杂度分析** - 时间复杂度：O(N) 。 - 空间复杂度：O（N）
