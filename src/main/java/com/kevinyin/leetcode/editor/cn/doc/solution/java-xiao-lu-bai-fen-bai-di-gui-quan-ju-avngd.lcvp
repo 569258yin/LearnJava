@@ -1,0 +1,36 @@
+#### 解题思路
+
+对于每一个（树或者子树的）根节点，我都去询问以该节点为根的树是否含有p、q两个后代节点，如果有，那么说明该节点就是它们的共同祖先。现在为了寻找最近的公共祖先，我们利用后序遍历的特性，当我们第一次找到了满足上述条件的节点时，它就是p、q的最近公共祖先。
+
+* java
+
+```java
+class Solution {
+    TreeNode ans;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        ans = null;
+        dfs(root, p, q);
+        return ans;
+    }
+    
+    // dfs返回p、q是否在以node为根的子树中
+    public boolean dfs(TreeNode node, TreeNode p, TreeNode q) {
+        if (node == null) return false;
+        boolean left = dfs(node.left, p, q);
+        boolean right = dfs(node.right, p, q);
+        if (node == p || node == q) {
+            if (left || right) { // p 或 q 其中之一就是它们的共同祖先
+                ans = node; // 用全局变量记录答案
+                return false; // 找到答案后一律返回false表示最近祖先已经找到了
+            } else {
+                return true;
+            }
+        } else if (left && right) { // 首次遇到这种情况表示当前节点就是最近的共同祖先
+            ans = node;
+            return false; // 找到答案后一律返回false表示最近祖先已经找到了
+        }
+        return left || right;
+    }
+}
+```
+

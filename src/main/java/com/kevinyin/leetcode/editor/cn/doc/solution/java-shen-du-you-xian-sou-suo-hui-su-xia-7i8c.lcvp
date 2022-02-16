@@ -1,0 +1,41 @@
+这题比较有意思，也比较简单，我们只需要回答一个问题就能写出递归/回溯的解答：**如果我们已经按照要求放了x个左括号，y个右括号，那么下一个我们能放什么哪一个括号？**
+
+有三种情况：
+
+1. **x+y == 2n**，说明所有括号已经放完了，不能再放了
+2. **x < n**, 左括号还没放完，可以放一个左括号
+3. **y < n && x > y**，右括号没放完，并且前面左括号比右括号多，可以放一个右括号
+
+* java
+
+```java
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        StringBuilder sb = new StringBuilder("(");
+        generate(sb, n, n - 1, n, res);
+        return res;
+    }
+
+    public static void generate(StringBuilder sb, int n, int l, int r, List<String> res) {
+        if (sb.length() == n * 2) {
+            res.add(sb.toString());
+            return ;
+        }
+        // l, r 分别表示可放置左右括号的剩余数量
+        if (l > 0) { // 我还能不能放一个左括号？
+            sb.append("(");
+            generate(sb, n, l - 1, r, res);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if (r > 0 && l < r) {
+            // 我还能不能放一个右括号？注意：放右括号时，在它前面左括号数量一定大于右括号
+            // 反过来说，此时左括号剩余数量一定要小于右括号剩余数量
+            sb.append(")");
+            generate(sb, n, l, r - 1, res);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
+```
+

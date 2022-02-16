@@ -1,0 +1,30 @@
+#### 解题思路
+
+该题重点是：当遍历完一个节点及子树，那么节点及子树不会再对结果有贡献，所以要及时删除其对应的前缀和
+
+* java
+
+```java
+class Solution {
+    Map<Integer, Integer> map;
+    int ans;
+    public int pathSum(TreeNode root, int sum) {
+        map = new HashMap<>();
+        map.put(0, 1);
+        ans = 0;
+        dfs(root, 0, sum);
+        return ans;
+    }
+    
+    public void dfs(TreeNode node, int preSum, int target) {
+        if (node == null) return ;
+        preSum += node.val;
+        ans += map.getOrDefault(preSum - target, 0);
+        map.put(preSum, map.getOrDefault(preSum, 0) + 1); // 记录到当前节点为止路径前缀和
+        dfs(node.left, preSum, target);
+        dfs(node.right, preSum, target);
+        map.put(preSum, map.get(preSum) - 1); // 重点：当前节点及子树已经遍历完，不会再对结果有贡献，所以要及时删除
+    }
+}
+```
+

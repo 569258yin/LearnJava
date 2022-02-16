@@ -1,0 +1,58 @@
+![image.png](https://pic.leetcode-cn.com/1631534101-yrerFC-image.png)
+
+### 解题思路
+
+定义树深度为deep，同一个深度的保存到同一个ListNode
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode[] listOfDepth(TreeNode tree) {
+        List<ListNode> list = new ArrayList<>();
+        dfs(list, tree, 1);
+        ListNode[] arr = new ListNode[list.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = list.get(i);
+        }
+        return arr;
+    }
+
+    private void dfs(List<ListNode> list, TreeNode node, int deep) {
+        if (node == null) {
+            return;
+        }
+        if (deep > list.size()) {
+            list.add(new ListNode(node.val));
+        } else {
+            ListNode n = list.get(deep - 1);
+            while (n.next != null) {
+                n = n.next;
+            }
+            n.next = new ListNode(node.val);
+        }
+        dfs(list, node.left, deep + 1);
+        dfs(list, node.right, deep + 1);
+    }
+}
+```
+

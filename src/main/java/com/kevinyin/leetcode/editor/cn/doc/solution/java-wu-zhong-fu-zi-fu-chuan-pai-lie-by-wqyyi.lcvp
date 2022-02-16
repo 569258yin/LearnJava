@@ -1,0 +1,35 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    List<String> list= new ArrayList<>();
+    StringBuffer s=new StringBuffer();
+    public String[] permutation(String S) {
+        dfs(S,list,s);
+        return list.toArray(new String[list.size()]);
+    }
+
+    public void dfs(String S,List<String> list,StringBuffer s) {
+        if(s.length() == S.length()){
+            list.add(new String(s));
+            return;
+        }
+        for(int i=0;i<S.length();i++){
+            String zz=new String(s);
+            if(zz.contains(S.charAt(i)+"")){
+                continue;
+            }
+            s.append(S.charAt(i));
+            dfs(S,list,s);
+            s.deleteCharAt(s.length()-1);
+        }
+    }
+}
+```
+

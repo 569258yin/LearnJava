@@ -1,0 +1,27 @@
+* 
+
+```
+class Solution {
+    private int count = 0;
+    Map<TreeNode,Integer> map = new HashMap<>();
+    public int pathSum(TreeNode root, int sum) {
+        if(root == null) return 0;
+        if(map.containsKey(root)) return map.get(root);
+        method(root,sum,0); 
+        map.put(root,count);
+        pathSum(root.left,sum);
+        pathSum(root.right,sum);
+       
+        return count;
+    }
+
+    public void method(TreeNode root,int target,int num){
+        if(root == null) return;
+        num += root.val;
+        if(num == target) count++;
+        method(root.left,target,num);
+        method(root.right,target,num);
+    }
+}
+```
+

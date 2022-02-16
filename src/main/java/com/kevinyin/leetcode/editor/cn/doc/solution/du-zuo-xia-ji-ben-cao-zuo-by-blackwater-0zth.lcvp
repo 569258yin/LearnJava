@@ -1,0 +1,59 @@
+### 代码
+
+* javascript
+
+```javascript
+/**
+ * @title 二叉树层次遍历
+ * @param {*} tree 
+ * @returns array
+ */
+ function BinaryTree2Array(tree) {
+  let trees = [];
+  if (tree) {
+    tree.level = 0;
+    let t = [tree];
+    while (t.length) {
+      let n = t.shift();
+      let { level } = n;
+      if (trees[level]) {
+        trees[level].push(n.val)
+      } else {
+        trees[level] = []
+        trees[level].push(n.val)
+      }
+      if (n.left) {
+        n.left.level = level + 1;
+        t.push(n.left)
+      }
+      if (n.right) {
+        n.right.level = level + 1;
+        t.push(n.right)
+      }
+    }
+  }
+  return trees;
+}
+
+/**
+ * @title 数组转链表
+ * @param Array arr 
+ */
+function arrayTolinkedList(arr) {
+  let temp = new ListNode('t');
+  let p = temp;
+  while (arr.length) {
+    let val = arr.shift();
+    let node = new ListNode(val);
+    p.next = node;
+    p = node;
+  }
+  return temp.next;
+}
+
+var listOfDepth = function(tree) {
+  let list = BinaryTree2Array(tree);
+  return list.map(arr => arrayTolinkedList(arr))
+};
+```
+

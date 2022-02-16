@@ -1,0 +1,35 @@
+这道题可以使用DFS解决，DFS模板如下
+
+* 
+
+```
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        ArrayList<String> res = new ArrayList<String>();
+        dfs(n,res,0,0,"");
+        return res;
+    }
+
+    //DFS模板
+    public void dfs(int n,ArrayList<String> temp,int leftNum,int rightNum,String str){
+        //出口一：判断不满足条件的情况，主要从左右括号数量上判断，三种情况。
+        if(leftNum < rightNum || leftNum > n || rightNum > n){
+            return;
+        }
+        //出口二：满足条件，即左右括号数量相等且已经达到最大值。
+        if(leftNum == rightNum && rightNum == n){
+            temp.add(str);
+        }
+        //否则
+        else{
+            //一定要先加左括号，再加右括号；
+            //加完左括号后，左括号数量加1,回溯；
+            dfs(n,temp,leftNum+1,rightNum,str+"(");
+
+            //再加右括号，然后dfs，再回溯。
+            dfs(n,temp,leftNum,rightNum+1,str+")");
+        }
+    }
+}
+```
+

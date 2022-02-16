@@ -1,0 +1,30 @@
+* 
+
+```
+class Solution {
+    List<String> res = new ArrayList<String>();
+    public List<String> generateParenthesis(int n) {
+        String currentStr = "";
+        int left=0;
+        int right=0;
+        dfs(n,currentStr,left,right);
+        return res;
+    }
+    public void dfs(int n,String currentStr,int left,int right){
+        // 终止条件
+        if(currentStr.length()==2*n){
+            res.add(currentStr);
+            return ;
+        }
+        // 如果该位置的left<n 则可添加左括号
+        if(left<n){
+            dfs(n,currentStr+"(",left+1,right);
+        }
+        // 如果该位置的右括号数目小于左括号 则可添加右括号
+        if(right<left){
+            dfs(n,currentStr+")",left,right+1);
+        }
+    }
+}
+```
+

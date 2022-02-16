@@ -1,0 +1,34 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    List<String> list = new ArrayList<>();
+    StringBuilder sb = new StringBuilder(); 
+    public String[] permutation(String S) {
+        backTrack(S,list,sb);
+        return list.toArray(new String[list.size()]);
+    }
+    public void backTrack(String s,List<String> list,StringBuilder sb){
+        if(sb.length() == s.length()){
+            list.add(new String(sb));
+            return;
+        }
+        for(int i = 0;i < s.length();i++){
+            String zz = new String(sb);
+            if(zz.contains(s.charAt(i)+"")){
+                continue;
+            }
+            sb.append(s.charAt(i));
+            backTrack(s,list,sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
+```
+

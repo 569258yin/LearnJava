@@ -1,0 +1,64 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode[] listOfDepth(TreeNode tree) {
+         Queue<TreeNode> queue=new LinkedList<>();
+        List<List<Integer>> lists=new ArrayList<>();
+        if(tree != null){
+            queue.add(tree);
+        }
+        while(!queue.isEmpty()){
+            List<Integer> list=new ArrayList<>();
+            for(int i=queue.size();i>0;i--){
+                    TreeNode tmp=queue.poll();
+                    list.add(tmp.val);
+                    if(tmp.left !=null){
+                        queue.add(tmp.left);
+                    }
+                    if(tmp.right != null){
+                        queue.add(tmp.right);
+                    }
+            }
+            lists.add(list);
+        }
+        ListNode[] a=new ListNode[lists.size()];
+        
+        for(int i=0;i<lists.size();i++){
+            ListNode l=new ListNode(0);
+            ListNode ll=l;
+            for(int j=0;j<lists.get(i).size();j++){
+                ListNode tmp=new ListNode(lists.get(i).get(j));
+                l.next=tmp;
+                l=l.next;
+            }
+            a[i]=ll.next;
+        }
+        return a;
+    }
+}
+```
+

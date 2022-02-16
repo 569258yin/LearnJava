@@ -1,0 +1,54 @@
+* 
+
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean checkSubTree(TreeNode t1, TreeNode t2) {
+        TreeNode findRoot = findRoot( t1, t2);
+        // 如果没有找到相等节点
+        if(findRoot==null){
+            return false;
+        }
+        // 找到相等节点 返回比较的结果
+        return judge(findRoot,t2);
+    }
+    // 寻找是否有相同的节点
+    public TreeNode findRoot(TreeNode t1,TreeNode t2){
+        if(t1!=null){
+            if(t1.val  == t2.val){
+                return t1;
+            }
+            TreeNode left = findRoot(t1.left,t2);
+            TreeNode right = findRoot(t1.right,t2);
+            if(left!=null) return left;
+            else if(right !=null) return right;
+        }
+        return null;
+    }
+    // 判断是否为子树
+    public boolean judge(TreeNode t1,TreeNode t2){
+        if(t1!=null){
+            // 如果t1 ==null  && t2!=null
+            if(t2==null) return false;
+            // 如果t1.val != t2.val
+            if(t1.val != t2.val) return false;
+            else {
+            // t1 !=null t2!=null  t1.val == t2.val 结果取决于两个子树的结果
+            return judge(t1.left,t2.left) && judge(t1.right,t2.right);
+            }
+            // 如果t1 ==null && t2!=null  
+        }else if(t1==null && t2!=null) return false;
+        //  t1==null  t2==null
+        return true;
+    }
+}
+```
+

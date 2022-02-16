@@ -1,0 +1,58 @@
+### 解题思路
+
+只有两种情况
+- p没有右子树
+- p有右子树
+
+# **第一种情况：**
+
+图例如下：
+![image.png](https://pic.leetcode-cn.com/1612021366-RjMUma-image.png)
+我们这里用5举例，首先我们根据二叉搜索树的性质遍历找到5结点的位置，并检查其不存在右子树。
+根据中序遍历，我们知道5的后继结点应该是6。我们观察一下从6到5这个路径（图中红线），可以得到是从6左转一次，然后一直往右边走直到找到5的。
+![image.png](https://pic.leetcode-cn.com/1612022310-fuCcni-image.png)
+我们再看一下2->0->-1，这两个路径，也是从2左转一次，然后一直往右走直到找到1的。那我们就得到此方案：**在左转的之前，将当前结点记录一下**。比如在寻找5，在6结点判断，是要左转的，那么用pre记录一下6这个结点。假如5没有右子树，那么就可以返回pre了，**假如路径中发生了新的左转动作，那么pre也需要更新**
+
+![image.png](https://pic.leetcode-cn.com/1612022573-YzfpmS-image.png)
+例如我要找A，他的后继结点是4
+这里在6左转了一次，pre=6，但在4这里比较，发现需要左转，那么更新pre=4。
+假如是在9这里，这里一次左转都没有，因为pre初始值是null，这里直接返回null即可。
+
+# **第二种情况：**
+
+那么只需要直接根据中序遍历的规则，找到p的右子树的最左孩子即可
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode pre = null;
+        while(root.val!=p.val){
+            //右边
+            if(p.val > root.val){          
+                root = root.right;
+            }
+            //左边
+            else{   
+                pre = root;
+                root = root.left;
+            }
+        }
+        //假如没有右子树
+        if(root.right==null){
+            return pre;
+        } 
+        else{
+            root = root.right;
+            while(root.left!=null){
+                root = root.left;
+            }
+            return root;
+        }  
+    }
+}
+```
+

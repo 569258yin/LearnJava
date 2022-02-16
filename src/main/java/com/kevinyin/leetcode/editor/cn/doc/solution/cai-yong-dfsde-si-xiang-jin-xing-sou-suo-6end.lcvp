@@ -1,0 +1,36 @@
+* 
+
+```
+class Solution {
+    
+    List<String> res = new ArrayList<>();
+
+    public String[] permutation(String S) {
+        int n = S.length();
+        int[] book = new int[n];
+        char[] arr = new char[n];
+        dfs(0, book, arr, S);
+        // System.out.println(res);
+        String[] result = res.toArray(new String[res.size()]);
+        return result;
+
+    }
+    public void dfs(int step, int[] book, char[] arr, String s){
+         if (step>=s.length()){
+            String str = new String(arr);
+            res.add(str);
+            return;
+        }
+        for (int i=0; i<s.length(); i++){
+            if (book[i] == 0){
+                arr[step] = s.charAt(i);
+                book[i] = 1;
+                dfs(step+1, book, arr, s);
+                book[i] = 0;
+            }
+        }
+        return;
+    }
+}
+```
+
