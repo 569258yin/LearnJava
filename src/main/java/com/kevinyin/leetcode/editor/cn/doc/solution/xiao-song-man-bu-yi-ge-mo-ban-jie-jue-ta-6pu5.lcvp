@@ -1,0 +1,37 @@
+![...eo_678736.433906.MOV](https://leetcode-cn.com/problems/container-with-most-water/solution/xiao-song-man-bu-yi-ge-mo-ban-jie-jue-ta-6pu5/586bf955-0d6c-4c64-b838-1c70a3e84cd5)
+
+贪心与动态规划
+共同点：取最优子结构的解，一步一步解决问题
+不同点：贪心的取局部最优做全局最优，动态规划递推全局最优
+深层区别：贪心是动态规划在最优子结构**评价纬度单一**时的一种**特殊解法**
+
+* java
+
+```java
+class Solution {
+    public int maxArea(int[] nums) {
+        // 评价最优条件是什么？
+        // 循环 -> 未解决问题 && 还有解
+        // 从可能的解中取出最优解
+        // 执行最优解
+        // 缩小问题规模 -> 双指针， for循环 ，减去最优解…
+
+        int max = 0;
+        int l = 0;
+        int r = nums.length - 1;
+        while(l < r){
+            int temp = Math.min(nums[l], nums[r]) * (r - l);
+            max = Math.max(max, temp);
+            if(nums[r] > nums[l])l++;
+            else r--;
+        }
+        return max;
+    }
+}
+```
+
+> 我是小松漫步，20届，末流985本科，曾参与开发手机QQ，现在不断在b站更新题解视频，手绘图解和代码实战，专注android与算法
+> 另外建有学习群，已经有上百位爱学习的小伙伴，可以加我微信 cs183071301，加了后，请主动说自己的技术栈和称呼，然后我拉你进群（务必备注自己哦）
+> 公众号[小松漫步](https://tva1.sinaimg.cn/large/008i3skNgy1gvsgosx8ltj30ks0lkmyc.jpg)，包含小松整理的各种书籍资料和读书心得
+> B站[小松不漫步](https://space.bilibili.com/44002411)同步视频题解和整活视频
+

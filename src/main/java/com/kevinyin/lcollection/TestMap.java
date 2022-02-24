@@ -7,18 +7,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TestMap {
 
-    ConcurrentHashMap<String,ConcurrentHashMap<String,Bean>> maps = new ConcurrentHashMap<String, ConcurrentHashMap<String, Bean>>();
+    ConcurrentHashMap<String, ConcurrentHashMap<String, Bean>> maps = new ConcurrentHashMap<String, ConcurrentHashMap<String, Bean>>();
 
-    public void put(String storeId,Bean bean){
+    public void put(String storeId, Bean bean) {
         ConcurrentHashMap m = maps.get(storeId);
-        if (m == null){
+        if (m == null) {
             m = new ConcurrentHashMap();
-            maps.put(storeId,m);
+            maps.put(storeId, m);
         }
-        maps.get(storeId).put(bean.getOrderId(),bean);
+        maps.get(storeId).put(bean.getOrderId(), bean);
     }
 
-    public void replace(){
+    public void replace() {
 
     }
 

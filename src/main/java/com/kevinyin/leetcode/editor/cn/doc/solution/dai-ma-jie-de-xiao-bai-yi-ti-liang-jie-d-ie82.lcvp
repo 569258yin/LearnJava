@@ -1,0 +1,108 @@
+嗨，大家好，我是代码界的小白，昨日cv题，直接润了。今天不能run了，继续和大家一起写题解。
+
+春招、实习已经陆续开始了，有Java后端的选手，可以一起交流学习呀，这边拉一个交流群，需要的可以私信我，拉你～
+
+## 题目主要信息
+
+在一个$n * n$的国际象棋棋盘上，一个骑士从单元格 $(row, column)$ 开始，并尝试进行 k 次移动。行和列是 从 0 开始 的，所以左上单元格是 (0,0) ，右下单元格是 $(n - 1, n - 1)$ 。
+
+象棋骑士有8种可能的走法，如下图所示。每次移动在基本方向上是两个单元格，然后在正交方向上是一个单元格。
+
+## 方法一:DFS
+
+### 具体方法
+
+感觉可以用$dfs$，于是就尝试了一下$dfs$，结果真的可以。
+
+设置一个三维的数组$per[step] [i] [j]$，表示在i，j位置走了$step$步后不出界的概率。
+
+就简单的套用dfs模版，遍历8个方向是否符合条件，最后返回即可。
+
+### 代码实现
+
+* java
+
+```java
+class Solution {
+    static int [][]dir = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
+    public double knightProbability(int n, int k, int row, int column) {
+        //记录概率
+        double[][][] per = new double[k+1][n][n];
+        return dfs(per,n,k,row,column,k);
+    }
+    double dfs(double [][][]per,int n,int k,int nowrow,int nowcol,int step){
+        //边界条件
+        if(nowrow<0 || nowrow>=n || nowcol<0 || nowcol>=n)
+                return 0;
+        // step为0 且没有出界
+        if(step == 0)
+            return 1.0;
+        // 当前位置已经访问过 直接返回
+        if(per[step][nowrow][nowcol] != 0)
+            return per[step][nowrow][nowcol];
+        // 枚举8个方向
+        for(int i=0;i<8;i++){
+            int next_row = nowrow+dir[i][0],next_col = nowcol+dir[i][1];
+            per[step][nowrow][nowcol] += dfs(per,n,k,next_row,next_col,step-1)/8;
+        }
+        return per[step][nowrow][nowcol];
+    }
+}
+```
+
+### 复杂度分析
+
+- 时间复杂度：$O（8* k*n * n）$，最坏的情况是每个位置有8个方向且都符合要求
+- 空间复杂度：$O（k *n *n）$
+
+## 方法二：动态规划
+
+### 具体方法
+
+说实话，一开始没有想到用dp数组来做，写完dfs后看了一眼官方题解，好家伙，具体可以dp，自己也来学习一下～
+
+![image.png](https://pic.leetcode-cn.com/1645063443-JDoNDv-image.png)
+
+### 代码实现
+
+* java
+
+```java
+// 来自官方代码！
+class Solution {
+  // 8个方法
+    static int[][] dirs = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
+
+    public double knightProbability(int n, int k, int row, int column) {
+      // dp数组
+        double[][][] dp = new double[k + 1][n][n];
+      // k步
+        for (int step = 0; step <= k; step++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                  // 走了k步 
+                    if (step == 0) {
+                        dp[step][i][j] = 1;
+                    } else {
+                      // 8个方向
+                        for (int[] dir : dirs) {
+                            int ni = i + dir[0], nj = j + dir[1];
+                            if (ni >= 0 && ni < n && nj >= 0 && nj < n) {
+                                dp[step][i][j] += dp[step - 1][ni][nj] / 8;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return dp[k][row][column];
+    }
+}
+```
+
+### 复杂度分析
+
+- 时间复杂度：$O（k*n * n)$，最坏的情况是每个位置有8个方向且都符合要求
+- 空间复杂度：$O（k *n *n）$
+
+明天见～
