@@ -1,0 +1,71 @@
+* 
+
+```
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        //思路: 排序 + 双指针
+        //1、最外一层循环用于选择第一个数
+        //2、循环内维护一个循环用于双指针遍历两数之和等于第一个数的相反数
+        //3、中间注意排除两个循环中所遇到的重复数
+
+        //开辟数组存储结果
+        List<List<Integer>> ans = new ArrayList<>();
+
+        int n = nums.length;
+
+        //排序
+        Arrays.sort(nums);
+
+        //最外层循环用于遍历第一个数
+        //循环上界因为左右指针最后位置
+        for (int i = 0; i < n - 2; i++) {
+
+            //若第一个数大于0,后两数也大于0,无解
+            if (nums[i] > 0) {
+                break;
+            }
+
+            //当遍历到重复数值,退出该次循环
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            //定义两指针开始两数之和代码
+            int left = i + 1;
+            int right = n - 1;
+            int target = -nums[i];
+
+            while (left < right) {
+
+                //符合条件则将三数加入结果数组
+                if (nums[left] + nums[right] == target) {
+                    ans.add(new ArrayList<>(Arrays.asList(nums[i], nums[left], nums[right])));
+
+                    //左指针右指针移动
+                    ++left;
+                    --right;
+
+                    //若指针移动之后出现重复数值继续移动到正确位置
+                    while (left < right && nums[left] == nums[left - 1]) {
+                        left++;
+                    }
+                    while (left < right && nums[right] == nums[right + 1]) {
+                        right--;
+                    }
+                    //不符条件比大小决定左指针和右指针移动
+                } else if (nums[left] + nums[right] > target) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
